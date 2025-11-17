@@ -1,0 +1,12 @@
+﻿apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: appconfig
+spec:
+  tracing:
+    samplingRate: "0" # 关闭 dapr 内置 trace（用应用 OTel 即可）
+  features:
+    - name: Resiliency
+      enabled: true
+    - name: SchedulerReminders
+      enabled: true

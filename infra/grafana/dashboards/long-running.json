@@ -1,0 +1,68 @@
+{
+    "title": "Dapr Long Running Overview",
+    "uid": "dapr-long-running-overview",
+    "timezone": "browser",
+    "panels": [
+        {
+            "type": "timeseries",
+            "title": "Actor calling count (rate)",
+            "datasource": {
+                "type": "prometheus",
+                "uid": "Prometheus"
+            },
+            "targets": [
+                {
+                    "expr": "rate(actors_calling_count_total[5m])",
+                    "legendFormat": "{{actor.method.name}}"
+                }
+            ],
+            "fieldConfig": {
+                "defaults": {
+                    "unit": "ops"
+                }
+            }
+        },
+        {
+            "type": "traces",
+            "title": "Trace Search (Tempo)",
+            "datasource": {
+                "type": "tempo",
+                "uid": "Tempo"
+            }
+        },
+        {
+            "type": "logs",
+            "title": "Long Running Logs (Loki)",
+            "datasource": {
+                "type": "loki",
+                "uid": "Loki"
+            },
+            "options": {
+                "dedupStrategy": "none",
+                "showLabels": true
+            },
+            "targets": [
+                {
+                    "expr": "{service_name=~\"(Long Running)\"}"
+                }
+            ],
+            "transformations": [],
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {
+                        "links": [
+                            {
+                                "title": "View trace",
+                                "url": "/explore?left=%5B\"now-1h\",\"now\",\"Tempo\",{\"query\":\"${__value.raw}\"}%5D",
+                                "internal": true,
+                                "urlDisplay": "Tempo"
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    ],
+    "schemaVersion": 39,
+    "version": 1
+}

@@ -1,0 +1,13 @@
+@LongRunningActor_HostAddress = http://localhost:5229
+
+### StartLongRunningOp
+POST {{LongRunningActor_HostAddress}}/v1/long-running/StartLongRunningOp
+
+### StopLongRunningOp
+POST {{LongRunningActor_HostAddress}}/v1/long-running/StopLongRunningOp
+
+### StartShortRunningOp
+POST {{LongRunningActor_HostAddress}}/v1/long-running/StartShortRunningOp
+
+### StopReminder
+POST {{LongRunningActor_HostAddress}}/v1/long-running/StopReminder

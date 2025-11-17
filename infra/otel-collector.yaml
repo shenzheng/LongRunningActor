@@ -1,0 +1,56 @@
+receivers:
+  otlp:
+    protocols:
+      grpc: { endpoint: 0.0.0.0:4317 }
+      http: { endpoint: 0.0.0.0:4318 }
+
+processors:
+  batch: {}
+  attributes/drop_high_card_labels:
+    actions:
+      - key: ActorId
+        action: delete
+      - key: SpanId
+        action: delete
+      - key: TraceId
+        action: delete
+      - key: RequestPath
+        action: delete
+      - key: key_OriginalFormat_
+        action: delete
+
+exporters:
+  debug:
+    # basic / normal / detailed
+    verbosity: detailed
+  otlphttp/loki:
+    endpoint: http://loki:3100/otlp
+    tls:
+      insecure: true
+    labels:
+      attributes:
+        - service.name
+        - severity
+  prometheus:
+    endpoint: 0.0.0.0:9464
+  otlp/tempo:
+    endpoint: tempo:4317
+    tls:
+      insecure: true
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [debug, otlp/tempo]
+
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [debug, prometheus]
+
+    logs:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [debug, otlphttp/loki]

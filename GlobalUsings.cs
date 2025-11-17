@@ -1,0 +1,14 @@
+﻿global using Dapr.Actors;
+global using Dapr.Actors.Client;
+global using Dapr.Actors.Runtime;
+global using LongRunningActor;
+global using LongRunningActor.DI;
+global using LongRunningActor.Otel;
+global using Microsoft.AspNetCore.Mvc;
+global using OpenTelemetry;
+global using OpenTelemetry.Metrics;
+global using OpenTelemetry.Resources;
+global using OpenTelemetry.Trace;
+global using System.Diagnostics;
+global using System.Diagnostics.Metrics;
+global using System.Runtime.CompilerServices;
