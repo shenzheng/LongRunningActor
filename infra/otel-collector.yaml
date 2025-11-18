@@ -8,6 +8,8 @@ processors:
   batch: {}
   attributes/drop_high_card_labels:
     actions:
+      - key: ParentId
+        action: delete
       - key: ActorId
         action: delete
       - key: SpanId
@@ -16,7 +18,15 @@ processors:
         action: delete
       - key: RequestPath
         action: delete
+      - key: RequestId
+        action: delete
       - key: key_OriginalFormat_
+        action: delete
+      - key: observed_timestamp
+        action: delete
+      - key: span_id
+        action: delete
+      - key: trace_id
         action: delete
 
 exporters:
@@ -27,10 +37,6 @@ exporters:
     endpoint: http://loki:3100/otlp
     tls:
       insecure: true
-    labels:
-      attributes:
-        - service.name
-        - severity
   prometheus:
     endpoint: 0.0.0.0:9464
   otlp/tempo:
@@ -52,5 +58,5 @@ service:
 
     logs:
       receivers: [otlp]
-      processors: [batch]
+      processors: [attributes/drop_high_card_labels, batch]
       exporters: [debug, otlphttp/loki]
